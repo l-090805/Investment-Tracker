@@ -15,3 +15,13 @@
 7.Conectezi FlutterFlow la API
 
 8.Polish: README + screenshots + deploy
+
+` ` `
+-Assets presetate (BTC, ETH, SPY, QQQ, NVIDIA, AAPL, GOOGL)
+
+-User poate adăuga investiții (asset, quantity, buyPrice, buyDate)
+
+-User poate vedea lista investițiilor cu P/L ($ și %)
+
+-User poate vedea summary pentru portofoliu (total + P/L)
+` ` `
