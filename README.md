@@ -25,3 +25,6 @@
 
 -User poate vedea summary pentru portofoliu (total + P/L)
 ` ` `
+
+sp500 -> spy
+nas100 -> QQQ
