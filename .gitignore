@@ -1,0 +1,54 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+out/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# App settings cu date sensibile
+appsettings.Development.json
+# Decommenteaza linia de mai jos daca appsettings.json contine parole/API keys:
+# appsettings.json
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Rider (JetBrains)
+.idea/
+
+# Publish
+publish/
+**/publish/
+
+# Entity Framework migrations temporare
+# (pastreaza-le daca vrei istoric migrari in repo)
+# Migrations/
+
+# Certificate
+*.pfx
+*.pem
+*.key

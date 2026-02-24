@@ -33,6 +33,7 @@ namespace Investment_Tracker
                      .AllowAnyHeader()
                      .AllowAnyMethod());
             });
+            builder.WebHost.UseUrls("http://0.0.0.0:" + (Environment.GetEnvironmentVariable("PORT") ?? "5000"));
 
             var app = builder.Build();
 
