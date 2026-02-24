@@ -1,0 +1,74 @@
+[
+  {
+    "ContainingType": "Investment_Tracker.Controllers.AssetsController",
+    "Method": "GetAll",
+    "RelativePath": "api/assets",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Investment_Tracker.Controllers.InvestmentsController",
+    "Method": "Create",
+    "RelativePath": "api/investments",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Investment_Tracker.Dtos.CreateInvestmentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Investment_Tracker.Controllers.InvestmentsController",
+    "Method": "GetAll",
+    "RelativePath": "api/investments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[Investment_Tracker.Dtos.InvestmentResponseDto, Investment-Tracker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Investment_Tracker.Controllers.InvestmentsController",
+    "Method": "Delete",
+    "RelativePath": "api/investments/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Investment_Tracker.Controllers.PortfolioController",
+    "Method": "GetSummary",
+    "RelativePath": "api/portfolio/summary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
