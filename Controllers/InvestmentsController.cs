@@ -65,7 +65,7 @@ public class InvestmentsController : ControllerBase
     public async Task<ActionResult<List<InvestmentResponseDto>>> GetAll()
     {
         var result = await _portfolio.GetInvestmentsWithPnlAsync();
-        return Ok(result);
+        return Ok(new { investments = result});
     }
 
     [HttpDelete("{id:int}")]
