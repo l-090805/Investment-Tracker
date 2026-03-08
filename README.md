@@ -4,7 +4,7 @@ A full-stack mobile/web application for tracking financial investments (stocks, 
 
 ## Live Demo
 
-🌐 [View Live App](https://investment-tracker-uii901.flutterflow.app) *(hosted on FlutterFlow)*
+🌐 [View Live App](https://investment-tracker-uis901.flutterflow.app/) *(hosted on FlutterFlow)*
 
 ---
 
