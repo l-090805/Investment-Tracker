@@ -52,3 +52,7 @@ publish/
 *.pfx
 *.pem
 *.key
+
+frontend/investment_tracker/ios/Runner/GoogleService-Info.plist
+frontend/investment_tracker/android/app/google-services.json
+frontend/investment_tracker/firebase/
