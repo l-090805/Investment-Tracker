@@ -33,6 +33,7 @@ namespace Investment_Tracker.Services
             if (investments.Count == 0)
                 return new List<InvestmentResponseDto>();
 
+
             var distinctAssetCodes = investments
                 .Select(i => i.AssetCode)
                 .Distinct()
