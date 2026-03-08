@@ -11,5 +11,7 @@
         public decimal buyPrice { get; set; }
 
         public DateOnly buyDate { get; set; }
+
+        public string userId { get; set; } = string.Empty;
     }
 }

@@ -15,11 +15,11 @@ namespace Investment_Tracker.Services
             _price = price;
         }
 
-        // ia toate investițiile din DB și întoarce DTO-uri cu P/L
-        public async Task<List<InvestmentResponseDto>> GetInvestmentsWithPnlAsync()
+        public async Task<List<InvestmentResponseDto>> GetInvestmentsWithPnlAsync(string userId)
         {
             var investments = await _db.Investments
                 .Include(i => i.asset)
+                .Where(i => i.userId == userId)
                 .Select(i => new
                 {
                     i.id,
@@ -33,7 +33,6 @@ namespace Investment_Tracker.Services
             if (investments.Count == 0)
                 return new List<InvestmentResponseDto>();
 
-            // max 7 asset-uri distincte
             var distinctAssetCodes = investments
                 .Select(i => i.AssetCode)
                 .Distinct()
@@ -83,9 +82,9 @@ namespace Investment_Tracker.Services
             return result;
         }
 
-        public async Task<PortfolioSummaryDto> GetSummaryAsync()
+        public async Task<PortfolioSummaryDto> GetSummaryAsync(string userId)
         {
-            var list = await GetInvestmentsWithPnlAsync();
+            var list = await GetInvestmentsWithPnlAsync(userId);
 
             if (list.Count == 0)
             {

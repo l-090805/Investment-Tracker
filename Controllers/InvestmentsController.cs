@@ -3,7 +3,7 @@ using Investment_Tracker.Dtos;
 using Investment_Tracker.Entities;
 using Investment_Tracker.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 
 namespace Investment_Tracker.Controllers;
 
@@ -23,6 +23,10 @@ public class InvestmentsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateInvestmentRequest request)
     {
+        var userId = Request.Headers["userId"].FirstOrDefault();
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized("userId header missing");
+
         var assetExists = await _db.Assets.AnyAsync(a => a.id == request.assetId);
         if (!assetExists)
             return BadRequest("Invalid assetId");
@@ -38,7 +42,8 @@ public class InvestmentsController : ControllerBase
             assetId = request.assetId,
             quantity = request.quantity,
             buyPrice = request.buyPrice,
-            buyDate = request.buyDate
+            buyDate = request.buyDate,
+            userId = userId
         };
 
         _db.Investments.Add(investment);
@@ -64,16 +69,27 @@ public class InvestmentsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<InvestmentResponseDto>>> GetAll()
     {
-        var result = await _portfolio.GetInvestmentsWithPnlAsync();
-        return Ok(new { investments = result});
+        var userId = Request.Headers["userId"].FirstOrDefault();
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized("userId header missing");
+
+        var result = await _portfolio.GetInvestmentsWithPnlAsync(userId);
+        return Ok(new { investments = result });
     }
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
+        var userId = Request.Headers["userId"].FirstOrDefault();
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized("userId header missing");
+
         var inv = await _db.Investments.FindAsync(id);
         if (inv is null)
             return NotFound();
+
+        if (inv.userId != userId)
+            return Forbid();
 
         _db.Investments.Remove(inv);
         await _db.SaveChangesAsync();
