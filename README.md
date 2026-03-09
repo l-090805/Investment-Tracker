@@ -5,6 +5,7 @@ A full-stack mobile/web application for tracking financial investments (stocks, 
 ## Live Demo
 
 🌐 [View Live App](https://investment-tracker-uis901.flutterflow.app/) *(hosted on FlutterFlow)*
+*Starting from 10 March 2026, some functions of the platform will stop working. The app was made using the FlutterFlow premium free trial. When it ends, some API calls will stop working due to only being able to use 2 at a time with the free plan*
 
 ---
 
