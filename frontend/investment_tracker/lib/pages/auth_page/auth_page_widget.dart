@@ -665,9 +665,49 @@ class _AuthPageWidgetState extends State<AuthPageWidget>
                                                       .fromSTEB(
                                                           0.0, 200.0, 0.0, 0.0),
                                                   child: FFButtonWidget(
-                                                    onPressed: () {
-                                                      print(
-                                                          'Button pressed ...');
+                                                    onPressed: () async {
+                                                      if (_model
+                                                          .emailAddressTextController
+                                                          .text
+                                                          .isEmpty) {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          SnackBar(
+                                                            content: Text(
+                                                              'Email required!',
+                                                            ),
+                                                          ),
+                                                        );
+                                                        return;
+                                                      }
+                                                      await authManager
+                                                          .resetPassword(
+                                                        email: _model
+                                                            .emailAddressTextController
+                                                            .text,
+                                                        context: context,
+                                                      );
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                            'Password reset email was sent to you!',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                          ),
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  4000),
+                                                          backgroundColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .secondary,
+                                                        ),
+                                                      );
                                                     },
                                                     text: 'Forgot Password',
                                                     options: FFButtonOptions(

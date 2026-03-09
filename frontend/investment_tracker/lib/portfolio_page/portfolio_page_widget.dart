@@ -412,14 +412,15 @@ class _PortfolioPageWidgetState extends State<PortfolioPageWidget> {
                                               ),
                                         ),
                                         Text(
-                                          formatNumber(
+                                          '${formatNumber(
                                             GetPortfolioSummaryCall
                                                 .totalPnlPercentage(
                                               portfolioPageGetPortfolioSummaryResponse
                                                   .jsonBody,
                                             ),
-                                            formatType: FormatType.percent,
-                                          ),
+                                            formatType: FormatType.decimal,
+                                            decimalType: DecimalType.automatic,
+                                          )}%',
                                           style: FlutterFlowTheme.of(context)
                                               .bodySmall
                                               .override(
@@ -679,17 +680,16 @@ class _PortfolioPageWidgetState extends State<PortfolioPageWidget> {
                                                               ),
                                                         ),
                                                         Text(
-                                                          valueOrDefault<
-                                                              String>(
-                                                            formatNumber(
-                                                              investmentItemItem
-                                                                  .pnlPct,
-                                                              formatType:
-                                                                  FormatType
-                                                                      .percent,
-                                                            ),
-                                                            '0',
-                                                          ),
+                                                          '${formatNumber(
+                                                            investmentItemItem
+                                                                .pnlPct,
+                                                            formatType:
+                                                                FormatType
+                                                                    .decimal,
+                                                            decimalType:
+                                                                DecimalType
+                                                                    .automatic,
+                                                          )}%',
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .bodySmall
@@ -1326,17 +1326,16 @@ class _PortfolioPageWidgetState extends State<PortfolioPageWidget> {
                                                                 ),
                                                           ),
                                                           Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                investmentItemItem
-                                                                    .pnlPct,
-                                                                formatType:
-                                                                    FormatType
-                                                                        .percent,
-                                                              ),
-                                                              '0',
-                                                            ),
+                                                            '${formatNumber(
+                                                              investmentItemItem
+                                                                  .pnlPct,
+                                                              formatType:
+                                                                  FormatType
+                                                                      .decimal,
+                                                              decimalType:
+                                                                  DecimalType
+                                                                      .automatic,
+                                                            )}%',
                                                             style: FlutterFlowTheme
                                                                     .of(context)
                                                                 .bodyMedium
