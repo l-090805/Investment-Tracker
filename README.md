@@ -26,13 +26,13 @@ A full-stack mobile/web application for tracking financial investments (stocks, 
 
 ## Features
 
-- 📈 Track investments across multiple asset classes (crypto, stocks, indices)
-- 💰 Real-time P&L calculation (USD and %) using live market prices
-- 📊 Portfolio summary with total value and total P&L
-- ➕ Add new investments with asset, quantity, buy price and buy date
-- 🗑️ Delete investments with confirmation dialog
-- 🔐 User authentication (Sign In / Sign Up) via Firebase
-- 👤 Per-user data isolation — each user sees only their own investments
+- Track investments across multiple asset classes (crypto, stocks, indices)
+- Real-time P&L calculation (USD and %) using live market prices
+- Portfolio summary with total value and total P&L
+- Add new investments with asset, quantity, buy price and buy date
+- Delete investments with confirmation dialog
+- User authentication (Sign In / Sign Up) via Firebase
+- Per-user data isolation — each user sees only their own investments
 
 ---
 
@@ -102,10 +102,6 @@ dotnet ef database update
 # Run the app
 dotnet run
 ```
-
-The API will be available at `http://localhost:5000`.
-
----
 
 ## Deployment
 
