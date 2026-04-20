@@ -6,8 +6,6 @@ A full-stack mobile/web application for tracking financial investments (stocks, 
 
 🌐 [View Live App](https://investment-tracker-uis901.flutterflow.app/) *(hosted on FlutterFlow)*
 
---> *Starting from 10 March 2026, some functions of the platform will stop working. The app was made using the FlutterFlow premium free trial. When it ends, some API calls will stop working due to only being able to use 2 at a time with the free plan*
-
 ---
 
 ## Tech Stack
@@ -53,32 +51,6 @@ Base URL: `https://investment-tracker-11jp.onrender.com`
 | `/api/portfolio/summary` | GET | Returns total portfolio value and total P&L |
 
 All endpoints (except `/api/assets`) require a `userId` header containing the Firebase UID of the authenticated user.
-
----
-
-## Project Structure
-
-```
-Investment-Tracker/
-├── Controllers/
-│   ├── AssetsController.cs
-│   ├── InvestmentsController.cs
-│   └── PortfolioController.cs
-├── Entities/
-│   ├── Asset.cs
-│   └── Investment.cs
-├── Services/
-│   ├── PortfolioService.cs
-│   ├── TwelveDataPriceService.cs
-│   └── AssetSymbolMapper.cs
-├── Dtos/
-│   ├── CreateInvestmentRequest.cs
-│   ├── InvestmentResponseDto.cs
-│   └── PortfolioSummaryDto.cs
-├── Data/
-├── Migrations/
-└── Program.cs
-```
 
 ---
 
@@ -131,7 +103,7 @@ Render detects the new commit and redeploys automatically (1-3 minutes).
 
 ---
 
-**Bellow are screenshots with the functional app, before the free trial from FlutterFlow ends and some functionality will be lost**
+**Bellow are screenshots with the app**
 
 --> Dropdown menu for selectig assets.
 <img width="1917" height="909" alt="image" src="https://github.com/user-attachments/assets/3aa8b24a-20e9-4b0f-8a81-21edf618bf3b" />
