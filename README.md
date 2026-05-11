@@ -1,6 +1,6 @@
 # Investment Tracker
 
-A full-stack mobile/web application for tracking financial investments (stocks, crypto, indices) with real-time P&L calculations.
+A web application for tracking financial investments (stocks, crypto, indices) with real-time P&L calculations.
 
 ## Live Demo
 
@@ -32,7 +32,7 @@ A full-stack mobile/web application for tracking financial investments (stocks, 
 - Add new investments with asset, quantity, buy price and buy date
 - Delete investments with confirmation dialog
 - User authentication (Sign In / Sign Up) via Firebase
-- Per-user data isolation — each user sees only their own investments
+- Each user sees only their own investments
 
 ---
 
@@ -49,57 +49,6 @@ Base URL: `https://investment-tracker-11jp.onrender.com`
 | `/api/investments` | POST | Add a new investment |
 | `/api/investments/{id}` | DELETE | Delete an investment by ID |
 | `/api/portfolio/summary` | GET | Returns total portfolio value and total P&L |
-
-All endpoints (except `/api/assets`) require a `userId` header containing the Firebase UID of the authenticated user.
-
----
-
-## Running Locally
-
-### Prerequisites
-- .NET 8 SDK
-- Entity Framework CLI (`dotnet tool install --global dotnet-ef`)
-
-### Setup
-
-```bash
-# Clone the repo
-git clone https://github.com/your-username/Investment-Tracker.git
-cd Investment-Tracker/Investment-Tracker
-
-# Restore dependencies
-dotnet restore
-
-# Apply migrations
-dotnet ef database update
-
-# Run the app
-dotnet run
-```
-
-## Deployment
-
-### Backend (Render)
-```bash
-git add .
-git commit -m "your message"
-git push origin main
-```
-Render detects the new commit and redeploys automatically (1-3 minutes).
-
-### Frontend (FlutterFlow)
-- Open project in FlutterFlow
-- Click **Publish → Publish to Web**
-
----
-
-## Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| `ConnectionStrings__Default` | SQLite connection string |
-| `TwelveData__ApiKey` | API key for Twelve Data price service |
-| `PORT` | Port for the web server (set automatically by Render) |
 
 ---
 
