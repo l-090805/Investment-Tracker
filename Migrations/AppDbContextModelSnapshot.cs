@@ -37,6 +37,10 @@ namespace Investment_Tracker.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("symbol")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("id");
 
                     b.HasIndex("code")

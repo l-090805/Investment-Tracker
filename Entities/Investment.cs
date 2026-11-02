@@ -1,5 +1,6 @@
 ﻿namespace Investment_Tracker.Entities
 {
+    //1 Investment = o pozitie a unui utilizator legata de un asset
     public class Investment
     {
         public int id { get; set; }

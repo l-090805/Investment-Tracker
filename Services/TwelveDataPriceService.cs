@@ -19,7 +19,6 @@ public class TwelveDataPriceService
 
     public async Task<decimal> GetCurrentPriceAsync(string symbol)
     {
-        // cache 60s per symbol (reduce drastic calls)
         var cacheKey = $"td:price:{symbol}";
         if (_cache.TryGetValue(cacheKey, out decimal cached))
             return cached;

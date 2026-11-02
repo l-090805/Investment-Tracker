@@ -24,6 +24,7 @@ namespace Investment_Tracker.Services
                 {
                     i.id,
                     AssetCode = i.asset.code,
+                    Symbol = i.asset.symbol,
                     i.quantity,
                     i.buyPrice,
                     i.buyDate
@@ -34,24 +35,22 @@ namespace Investment_Tracker.Services
                 return new List<InvestmentResponseDto>();
 
 
-            var distinctAssetCodes = investments
-                .Select(i => i.AssetCode)
-                .Distinct()
-                .ToList();
+            var distinctAssets = investments
+             .Select(i => new { i.AssetCode, i.Symbol })
+             .Distinct()
+             .ToList();
 
             var currentPrices = new Dictionary<string, decimal>();
 
-            foreach (var code in distinctAssetCodes)
+            foreach (var a in distinctAssets)
             {
                 try
                 {
-                    var symbol = AssetSymbolMapper.ToMarketSymbol(code);
-                    var price = await _price.GetCurrentPriceAsync(symbol);
-                    currentPrices[code] = price;
+                    currentPrices[a.AssetCode] = await _price.GetCurrentPriceAsync(a.Symbol);
                 }
                 catch
                 {
-                    currentPrices[code] = 0m;
+                    currentPrices[a.AssetCode] = 0m;
                 }
             }
 

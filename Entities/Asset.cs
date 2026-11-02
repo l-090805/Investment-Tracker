@@ -6,5 +6,6 @@
         public string code { get; set; } = null!;     //BTC, GOOGL, AAPL etc.
         public string name { get; set; } = null!;
         public string category { get; set; } = null!; //Crypto, stock, index
+        public string symbol { get; set; } = null!;
     }
 }
