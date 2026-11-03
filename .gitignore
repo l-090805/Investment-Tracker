@@ -25,6 +25,7 @@ packages/
 
 # App settings cu date sensibile
 appsettings.Development.json
+appsettings.json
 # Decommenteaza linia de mai jos daca appsettings.json contine parole/API keys:
 # appsettings.json
 
