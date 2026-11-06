@@ -6,5 +6,9 @@
         public decimal TotalCurrentValue { get; set; }
         public decimal TotalPnlUsd { get; set; }
         public decimal TotalPnlPct { get; set; }
+
+        public List<DateOnly> ChartDates { get; set; } = new();
+        public List<decimal> ChartValues { get; set; } = new();   
+        public List<decimal> ChartCosts { get; set; } = new();    
     }
 }

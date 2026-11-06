@@ -33,6 +33,19 @@ namespace Investment_Tracker.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
+                    b.Property<DateOnly?>("historyFrom")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("historySyncedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("lastPrice")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("lastPriceAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -80,7 +93,42 @@ namespace Investment_Tracker.Migrations
                     b.ToTable("Investments");
                 });
 
+            modelBuilder.Entity("Investment_Tracker.Entities.PriceHistory", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("assetId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("close")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("date")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("assetId", "date")
+                        .IsUnique();
+
+                    b.ToTable("PriceHistory");
+                });
+
             modelBuilder.Entity("Investment_Tracker.Entities.Investment", b =>
+                {
+                    b.HasOne("Investment_Tracker.Entities.Asset", "asset")
+                        .WithMany()
+                        .HasForeignKey("assetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("asset");
+                });
+
+            modelBuilder.Entity("Investment_Tracker.Entities.PriceHistory", b =>
                 {
                     b.HasOne("Investment_Tracker.Entities.Asset", "asset")
                         .WithMany()

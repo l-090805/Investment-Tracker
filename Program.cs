@@ -25,6 +25,7 @@ namespace Investment_Tracker
             builder.Services.AddSwaggerGen();
             builder.Services.AddMemoryCache();
             builder.Services.AddHttpClient<TwelveDataPriceService>();
+            builder.Services.AddScoped<PriceRefreshService>();
             builder.Services.AddScoped<PortfolioService>();
             builder.Services.AddCors(options =>
             {

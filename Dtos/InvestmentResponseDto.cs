@@ -4,15 +4,21 @@
     {
         public int Id { get; set; }
         public string AssetCode { get; set; } = null!;
+        public string AssetName { get; set; } = null!;          
 
         public decimal Quantity { get; set; }
         public decimal BuyPrice { get; set; }
         public DateOnly BuyDate { get; set; }
 
         public decimal CurrentPrice { get; set; }
+        public DateTime? PriceUpdatedAt { get; set; }            
         public decimal CostBasis { get; set; }
         public decimal CurrentValue { get; set; }
         public decimal PnlUsd { get; set; }
         public decimal PnlPct { get; set; }
+
+
+        public List<DateOnly> ChartDates { get; set; } = new();
+        public List<decimal> ChartPrices { get; set; } = new();
     }
 }

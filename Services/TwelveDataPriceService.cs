@@ -1,45 +1,90 @@
-﻿using System.Text.Json.Serialization;
-using Microsoft.Extensions.Caching.Memory;
+﻿using System.Globalization;
+using System.Text.Json;
 
 namespace Investment_Tracker.Services;
 
 public class TwelveDataPriceService
 {
+    private const string BaseUrl = "https://api.twelvedata.com";
+
     private readonly HttpClient _http;
-    private readonly IMemoryCache _cache;
     private readonly string _apiKey;
 
-    public TwelveDataPriceService(HttpClient http, IMemoryCache cache, IConfiguration config)
+    public TwelveDataPriceService(HttpClient http, IConfiguration config)
     {
         _http = http;
-        _cache = cache;
         _apiKey = config["MarketData:TwelveDataApiKey"]
             ?? throw new InvalidOperationException("Missing MarketData:TwelveDataApiKey in configuration.");
     }
 
-    public async Task<decimal> GetCurrentPriceAsync(string symbol)
+    public async Task<Dictionary<string, decimal>> GetPricesAsync(IReadOnlyCollection<string> symbols)
     {
-        var cacheKey = $"td:price:{symbol}";
-        if (_cache.TryGetValue(cacheKey, out decimal cached))
-            return cached;
+        var result = new Dictionary<string, decimal>();
+        if (symbols.Count == 0)
+            return result;
 
-        var url = $"https://api.twelvedata.com/price?symbol={Uri.EscapeDataString(symbol)}&apikey={_apiKey}";
+        var joined = string.Join(",", symbols.Select(Uri.EscapeDataString));
+        var url = $"{BaseUrl}/price?symbol={joined}&apikey={_apiKey}";
 
-        var resp = await _http.GetFromJsonAsync<PriceResponse>(url);
-        if (resp is null || string.IsNullOrWhiteSpace(resp.Price))
-            throw new InvalidOperationException($"No price returned for symbol {symbol}");
+        using var doc = JsonDocument.Parse(await _http.GetStringAsync(url));
+        var root = doc.RootElement;
 
-        if (!decimal.TryParse(resp.Price, System.Globalization.NumberStyles.Any,
-                System.Globalization.CultureInfo.InvariantCulture, out var price))
-            throw new InvalidOperationException($"Invalid price format for {symbol}: {resp.Price}");
+        if (symbols.Count == 1)
+        {
+            // Pentru un singur simbol raspunsul este: { "price": "123.45" }
+            if (TryReadPrice(root, out var price))
+                result[symbols.First()] = price;
+            return result;
+        }
 
-        _cache.Set(cacheKey, price, TimeSpan.FromSeconds(60));
-        return price;
+        // Pentru mai multe simboluri: { "AAPL": { "price": "..." }, "BTC/USD": { "price": "..." } }
+        foreach (var symbol in symbols)
+        {
+            if (root.TryGetProperty(symbol, out var item) && TryReadPrice(item, out var price))
+                result[symbol] = price;
+        }
+
+        return result;
     }
 
-    private sealed class PriceResponse
+    // Istoricul zilnic (pret de inchidere) de la 'from' pana azi. 1 credit / request.
+    public async Task<List<(DateOnly Date, decimal Close)>> GetDailyHistoryAsync(string symbol, DateOnly from)
     {
-        [JsonPropertyName("price")]
-        public string? Price { get; set; }
+        var url = $"{BaseUrl}/time_series?symbol={Uri.EscapeDataString(symbol)}" +
+                  $"&interval=1day&start_date={from:yyyy-MM-dd}&outputsize=5000&apikey={_apiKey}";
+
+        using var doc = JsonDocument.Parse(await _http.GetStringAsync(url));
+        var root = doc.RootElement;
+
+        if (!root.TryGetProperty("values", out var values) || values.ValueKind != JsonValueKind.Array)
+        {
+            var message = root.TryGetProperty("message", out var m) ? m.GetString() : "no values";
+            throw new InvalidOperationException($"Twelve Data time_series failed for {symbol}: {message}");
+        }
+
+        var points = new List<(DateOnly, decimal)>();
+        foreach (var v in values.EnumerateArray())
+        {
+            var dateText = v.GetProperty("datetime").GetString();
+            var closeText = v.GetProperty("close").GetString();
+
+            // "datetime" poate fi "2026-11-05" sau "2026-11-05 00:00:00" -> pastram doar data
+            if (dateText is null || closeText is null || dateText.Length < 10) continue;
+            if (!DateOnly.TryParseExact(dateText[..10], "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out var date)) continue;
+            if (!decimal.TryParse(closeText, NumberStyles.Any, CultureInfo.InvariantCulture, out var close)) continue;
+
+            points.Add((date, close));
+        }
+
+        return points.OrderBy(p => p.Item1).ToList();
+    }
+
+    private static bool TryReadPrice(JsonElement element, out decimal price)
+    {
+        price = 0;
+        return element.ValueKind == JsonValueKind.Object
+            && element.TryGetProperty("price", out var p)
+            && decimal.TryParse(p.GetString(), NumberStyles.Any, CultureInfo.InvariantCulture, out price);
     }
 }

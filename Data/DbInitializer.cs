@@ -43,7 +43,7 @@ namespace Investment_Tracker.Data
                 new() { code = "SLV", name = "iShares Silver Trust",         category = "ETF", symbol = "SLV" },
                 new() { code = "USO", name = "United States Oil Fund",       category = "ETF", symbol = "USO" },
 
-                // Acțiuni
+                // Acțiuni individuale
                 new() { code = "NVDA",  name = "NVIDIA",            category = "Stock", symbol = "NVDA" },
                 new() { code = "AAPL",  name = "Apple",             category = "Stock", symbol = "AAPL" },
                 new() { code = "GOOGL", name = "Alphabet (Google)", category = "Stock", symbol = "GOOGL" },

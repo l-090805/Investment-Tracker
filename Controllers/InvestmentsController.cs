@@ -13,11 +13,19 @@ public class InvestmentsController : ControllerBase
 {
     private readonly AppDbContext _db;
     private readonly PortfolioService _portfolio;
+    private readonly PriceRefreshService _prices;
+    private readonly ILogger<InvestmentsController> _logger;
 
-    public InvestmentsController(AppDbContext db, PortfolioService portfolio)
+    public InvestmentsController(
+        AppDbContext db,
+        PortfolioService portfolio,
+        PriceRefreshService prices,
+        ILogger<InvestmentsController> logger)
     {
         _db = db;
         _portfolio = portfolio;
+        _prices = prices;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -49,6 +57,18 @@ public class InvestmentsController : ControllerBase
         _db.Investments.Add(investment);
         await _db.SaveChangesAsync();
 
+        //aducem istoricul de la data cumpararii (1 credit, doar daca lipseste),
+        // ca graficul si pretul curent sa fie disponibile imediat.
+        try
+        {
+            await _prices.EnsureHistoryForInvestmentAsync(investment.assetId, investment.buyDate);
+        }
+        catch (Exception ex)
+        {
+            // Investitia e deja salvata, o eroare nu o anuleaza
+            _logger.LogWarning(ex, "History backfill failed for investment {Id}", investment.id);
+        }
+
         var created = await _db.Investments
             .Include(i => i.asset)
             .Where(i => i.id == investment.id)
@@ -75,6 +95,21 @@ public class InvestmentsController : ControllerBase
 
         var result = await _portfolio.GetInvestmentsWithPnlAsync(userId);
         return Ok(new { investments = result });
+    }
+
+    //o singura investitie, pentru pagina de view details / investitie
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<InvestmentResponseDto>> GetById(int id)
+    {
+        var userId = Request.Headers["userId"].FirstOrDefault();
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized("userId header missing");
+
+        var investment = await _portfolio.GetInvestmentAsync(userId, id);
+        if (investment is null)
+            return NotFound();
+
+        return Ok(investment);
     }
 
     [HttpDelete("{id:int}")]
